@@ -1,0 +1,57 @@
+﻿@model List<Class>
+
+@{
+    ViewData["Title"] = "Classes Deletion Result";
+}
+
+<h1>Classes Deletion Result</h1>
+
+<h2>Classes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Trainer ID</th>
+            <th>Class Time</th>
+            <th>Duration</th>
+            <th>Maximum Participants</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cclass in Model)
+        {
+            <tr>
+                <td>@cclass.Id</td>
+                <td>@cclass.Name</td>
+                <td>@cclass.TrainerId</td>
+                <td>@cclass.ClassTime</td>
+                <td>@cclass.Duration</td>
+                <td>@cclass.MaximumParticipants</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Class Registrations</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Registration Date</th>
+            <th>Class ID</th>
+            <th>Member ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var registration in Model.SelectMany(cclass => cclass.ClassRegistrations))
+        {
+            <tr>
+                <td>@registration.Id</td>
+                <td>@registration.RegistrationDate</td>
+                <td>@registration.ClassId</td>
+                <td>@registration.MemberId</td>
+            </tr>
+        }
+    </tbody>
+</table>

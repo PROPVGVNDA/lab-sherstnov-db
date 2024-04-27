@@ -1,0 +1,87 @@
+﻿@model List<Member>
+@{
+    ViewData["Title"] = "Related Tables";
+}
+
+<h1>Related Tables</h1>
+
+<h2>Members</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Date Joined</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model)
+        {
+            <tr>
+                <td>@member.Id</td>
+                <td>@member.Name</td>
+                <td>@member.Email</td>
+                <td>@member.Phone</td>
+                <td>@member.Address</td>
+                <td>@member.DateJoined</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Member Trainers</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Member ID</th>
+            <th>Trainer ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model)
+        {
+            foreach (var trainer in member.MemberTrainers)
+            {
+                <tr>
+                    <td>@trainer.Id</td>
+                    <td>@trainer.StartDate</td>
+                    <td>@trainer.EndDate</td>
+                    <td>@trainer.MemberId</td>
+                    <td>@trainer.TrainerId</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h2>Class Registrations</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Registration Date</th>
+            <th>Class ID</th>
+            <th>Member ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Model)
+        {
+            foreach (var registration in member.ClassRegistrations)
+            {
+                <tr>
+                    <td>@registration.Id</td>
+                    <td>@registration.RegistrationDate</td>
+                    <td>@registration.ClassId</td>
+                    <td>@registration.MemberId</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

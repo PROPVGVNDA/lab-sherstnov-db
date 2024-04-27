@@ -1,0 +1,119 @@
+﻿@model List<Trainer>
+
+@{
+    ViewData["Title"] = "Trainer Deletion Result";
+}
+
+<h1>Trainer Deletion Result</h1>
+
+<h2>Trainers</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Specialization</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainer in Model)
+        {
+            <tr>
+                <td>@trainer.Id</td>
+                <td>@trainer.Name</td>
+                <td>@trainer.Email</td>
+                <td>@trainer.Phone</td>
+                <td>@trainer.Specialization</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Member Trainers</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>MemberTrainer ID</th>
+            <th>Trainer ID</th>
+            <th>Member ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainer in Model)
+        {
+            foreach (var memberTrainer in trainer.MemberTrainers)
+            {
+                <tr>
+                    <td>@memberTrainer.Id</td>
+                    <td>@memberTrainer.TrainerId</td>
+                    <td>@memberTrainer.MemberId</td>
+                    <td>@memberTrainer.StartDate.ToShortDateString()</td>
+                    <td>@memberTrainer.EndDate.ToShortDateString()</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h2>Classes</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Trainer ID</th>
+            <th>Class Time</th>
+            <th>Duration</th>
+            <th>Maximum Participants</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainer in Model)
+        {
+            foreach (var cclass in trainer.Classes)
+            {
+                <tr>
+                    <td>@cclass.Id</td>
+                    <td>@cclass.Name</td>
+                    <td>@cclass.TrainerId</td>
+                    <td>@cclass.ClassTime.ToString("g")</td>
+                    <td>@cclass.Duration</td>
+                    <td>@cclass.MaximumParticipants</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h2>Class Registrations</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Registration Date</th>
+            <th>Class ID</th>
+            <th>Member ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainer in Model)
+        {
+            foreach (var cclass in trainer.Classes)
+            {
+                foreach (var registration in cclass.ClassRegistrations)
+                {
+                    <tr>
+                        <td>@registration.Id</td>
+                        <td>@registration.RegistrationDate.ToShortDateString()</td>
+                        <td>@registration.ClassId</td>
+                        <td>@registration.MemberId</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
