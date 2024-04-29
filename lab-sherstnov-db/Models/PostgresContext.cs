@@ -26,7 +26,9 @@ public partial class PostgresContext : DbContext
     public virtual DbSet<Trainer> Trainers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=1425;Database=postgres");
+        => optionsBuilder
+            //.UseLazyLoadingProxies()
+            .UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=1425;Database=postgres");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

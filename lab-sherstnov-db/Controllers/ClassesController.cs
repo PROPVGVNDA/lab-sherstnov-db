@@ -33,9 +33,27 @@ namespace lab_sherstnov_db.Controllers
                 return NotFound();
             }
 
+            // lazy loading
+            //var cclass = await _context.Classes
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+
+            // eager loading
+            //var cclass = await _context.Classes
+            //        .Include(c => c.Trainer)
+            //        .Include(c => c.ClassRegistrations)
+            //        .ThenInclude(ccr => ccr.Member)
+            //        .FirstOrDefaultAsync(c => c.Id == id);
+
+            //explicit loading
             var cclass = await _context.Classes
-                .Include(c => c.Trainer)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                        .FirstOrDefaultAsync();
+            _context.Entry(cclass).Reference(c => c.Trainer).Load();
+            _context.Entry(cclass).Collection(c => c.ClassRegistrations).Load();
+            foreach (var classRegistration in cclass.ClassRegistrations)
+            {
+                _context.Entry(classRegistration).Reference(ccr => ccr.Member).Load();
+            }
+
             if (cclass == null)
             {
                 return NotFound();
@@ -153,6 +171,24 @@ namespace lab_sherstnov_db.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(DeleteResult));
+        }
+
+        public async Task<IActionResult> GetAverageDuration(int threshold)
+        {
+            var durations = _context.Classes
+                .Where(c => c.MaximumParticipants > threshold)
+                .OrderByDescending(c => c.Duration)
+                .Select(c => c.Duration);
+
+            if (await durations.AnyAsync())
+            {
+                var averageDuration = await durations.AverageAsync();
+                return Json(new { AverageDuration = averageDuration });
+            }
+            else
+            {
+                return Json(new { AverageDuration = 0, Message = "No classes that exceed the specified participant threshold." });
+            }
         }
 
         private bool ClassExists(int id)
